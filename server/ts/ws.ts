@@ -1,15 +1,14 @@
-import * as express from 'express';
-import * as SocketIO from 'socket.io';
+import express from 'express';
+import { Server as SocketIOServer } from 'socket.io';
 import * as http from 'http';
 import * as _ from 'lodash';
 import {Utils} from './utils';
-import {log} from './log';
 
 export class Server {
   port;
   _connections = {};
   _counter = 0;
-  io;
+  io: SocketIOServer;
   connection_callback;
   error_callback;
   status_callback;
@@ -18,15 +17,20 @@ export class Server {
     this.port = port;
     var self = this;
 
-
     const app = express();
     const server = http.createServer(app);
-    this.io = SocketIO(server);
+      this.io = new SocketIOServer(server, {
+          cors: {
+              origin: "http://localhost:8008",
+              methods: ["GET", "POST"],
+              credentials: true
+          }
+      });
 
     this.io.on('connection', function (connection) {
       console.info('a user connected');
 
-      connection.remoteAddress = connection.handshake.address.address;
+      // connection.ip = connection.handshake.address.address;
       const c = new Connection(self._createId(), connection, self);
 
       if (self.connection_callback) {
@@ -36,8 +40,11 @@ export class Server {
     });
 
     this.io.on('error', function (err) {
+        console.error('io error');
       console.error(err.stack);
-      self.error_callback()
+      if (self.error_callback) {
+        self.error_callback();
+      }
     });
 
     server.listen(port, function () {
@@ -66,7 +73,6 @@ export class Server {
   onError(callback) {
     this.error_callback = callback;
   }
-
 
   forEachConnection(callback) {
     _.each(this._connections, callback);
@@ -98,16 +104,16 @@ export class Connection {
     this.id = id;
     const self = this;
 
-
     // HANDLE DISPATCHER IN HERE
     connection.on('dispatch', function (message) {
-      console.log('Received dispatch request')
-      self._connection.emit('dispatched', {'status': 'OK', host: server.host, port: server.port})
+      console.info('Received dispatch request');
+      self._connection.emit('dispatched', {'status': 'OK', host: server.host, port: server.port});
     });
 
     connection.on('message', function (message) {
-      if (self.listen_callback)
-        self.listen_callback(message)
+      if (self.listen_callback) {
+        self.listen_callback(message);
+      }
     });
 
     connection.on('disconnect', function () {
@@ -127,7 +133,7 @@ export class Connection {
   }
 
   broadcast(message) {
-    throw 'Not implemented';
+    throw new Error('Not implemented');
   }
 
   send(message) {
@@ -135,11 +141,11 @@ export class Connection {
   }
 
   sendUTF8(data) {
-    this._connection.send(data);
+    this._connection.emit('message', data);
   }
 
   close(logError) {
-    log.info('Closing connection to ' + this._connection.remoteAddress + '. Error: ' + logError);
+    console.info('Closing connection to ' + this._connection.remoteAddress + '. Error: ' + logError);
     this._connection.disconnect();
   }
 }

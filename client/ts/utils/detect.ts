@@ -27,6 +27,7 @@ export class Detect {
 
   static canPlayMP3() {
     // return Modernizr.audio.mp3;
+      return true;
   };
 
   static isSafari() {

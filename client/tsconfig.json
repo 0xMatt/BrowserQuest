@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     /* Basic Options */
-    "target": "es5",
-    /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'. */
+    "target": "es5", // Target JavaScript version for browser compatibility
     "module": "commonjs",
     /* Specify module code generation: 'none', commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     "lib": [
@@ -20,7 +19,7 @@
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
     "outDir": "../dist/client",
     /* Redirect output structure to the directory. */
-    "rootDir": "./ts",
+//    "rootDir": "./ts",
     /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
     "removeComments": true,
     /* Do not emit comments to output. */
@@ -41,14 +40,7 @@
     // "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. */
     // types option has been previously configured
     // typeRoots option has been previously configured
-    "typeRoots": [
-      // add path to @types
-      "./node_modules/@types"
-    ],
-    "types": [
-      // add node as an option
-      "node"
-    ],
+
     /* Additional Checks */
     // "noUnusedLocals": true,                /* Report errors on unused locals. */
     // "noUnusedParameters": true,            /* Report errors on unused parameters. */
@@ -56,11 +48,16 @@
     // "noFallthroughCasesInSwitch": true,    /* Report errors for fallthrough cases in switch statement. */
 
     /* Module Resolution Options */
-    "moduleResolution": "node",
+    //    "moduleResolution": "",
     /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
     // "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
     // "paths": {},                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
-    // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
+    "rootDirs": [
+      "./ts",
+      "../shared/ts"
+    ],
+    "esModuleInterop": true,
+    /* List of root folders whose combined content represents the structure of the project at runtime. */
     // "typeRoots": [],                       /* List of folders to include type definitions from. */
     // "types": [],                           /* Type declaration files to be included in compilation. */
     // "allowSyntheticDefaultImports": true,  /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
@@ -75,11 +72,13 @@
     /* Experimental Options */
     "experimentalDecorators": true,
     /* Enables experimental support for ES7 decorators. */
-    "emitDecoratorMetadata": true
-    /* Enables experimental support for emitting type metadata for decorators. */
+    "emitDecoratorMetadata": true,
+    /* Enables experimental support for emitting  type metadata for decorators. */
+    "allowSyntheticDefaultImports": true
   },
   "include": [
-    "./ts/**/*.ts"
+    "./ts/**/*.ts",
+    "../shared/ts/gametypes.ts"
   ],
   "exclude": [
     "./node_modules",

@@ -1,6 +1,5 @@
 import {sprites} from '../sprites';
 import {Animation} from '../animation';
-import {log} from '../lib/log';
 
 export class Sprite {
 
@@ -98,7 +97,7 @@ export class Sprite {
         height: this.height
       };
     } catch (e) {
-      log.error('Error getting image data for sprite : ' + this.name);
+      console.error('Error getting image data for sprite : ' + this.name);
     }
   }
 

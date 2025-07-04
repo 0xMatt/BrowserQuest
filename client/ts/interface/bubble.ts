@@ -1,6 +1,5 @@
 import {Timer} from '../utils/timer';
 
-import * as $ from 'jquery';
 
 export class Bubble {
 

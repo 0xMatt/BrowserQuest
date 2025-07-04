@@ -1,5 +1,5 @@
+
 import {Types} from '../../shared/ts/gametypes';
-import {log} from './log';
 import * as _ from 'lodash';
 
 export class FormatChecker {
@@ -50,7 +50,7 @@ export class FormatChecker {
       });
     }
     else {
-      log.error('Unknown message type: ' + type);
+      console.error('Unknown message type: ' + type);
       return false;
     }
   }

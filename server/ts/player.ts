@@ -3,7 +3,6 @@ import {FormatChecker} from './format';
 import {Character} from './character';
 import {Connection, Server} from './ws';
 import {Types} from '../../shared/ts/gametypes';
-import {log} from './log';
 import {Utils} from './utils';
 import {World} from './world';
 import {Messages} from './message';
@@ -48,7 +47,7 @@ export class Player extends Character {
     this.connection.listen(function (message) {
       var action = parseInt(message[0]);
 
-      log.debug('Received: ' + message);
+      console.debug('Received: ' + message);
       if (!self.formatChecker.check(message)) {
         self.connection.close('Invalid ' + Types.getMessageTypeAsString(action) + ' message format: ' + message);
         return;
@@ -365,7 +364,7 @@ export class Player extends Character {
 
   equipItem(item) {
     if (item) {
-      log.debug(this.name + ' equips ' + Types.getKindAsString(item.kind));
+      console.debug(this.name + ' equips ' + Types.getKindAsString(item.kind));
 
       if (Types.isArmor(item.kind)) {
         this.equipArmor(item.kind);

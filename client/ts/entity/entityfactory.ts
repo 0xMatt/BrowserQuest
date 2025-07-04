@@ -1,5 +1,4 @@
 import {Types} from '../../../shared/ts/gametypes';
-import {log} from '../lib/log';
 import {Warrior} from './character/player/classes/warrior';
 import {Mobs} from './character/mob/mobs';
 import {Items} from './objects/items';
@@ -12,7 +11,7 @@ export const EntityFactory: any = {};
 
 EntityFactory.createEntity = function (kind, id, name) {
   if (!kind) {
-    log.error('kind is undefined', true);
+    console.error('kind is undefined', true);
     return;
   }
 

@@ -1,4 +1,3 @@
-import {log} from './log';
 import {Types} from '../../shared/ts/gametypes';
 
 export const Properties = {
@@ -158,7 +157,7 @@ export const Properties = {
         return Types.getArmorRank(kind) + 1;
       }
     } catch (e) {
-      log.error('No level found for armor: ' + Types.getKindAsString(kind));
+      console.error('No level found for armor: ' + Types.getKindAsString(kind));
     }
   },
   getWeaponLevel: kind => {
@@ -169,7 +168,7 @@ export const Properties = {
         return Types.getWeaponRank(kind) + 1;
       }
     } catch (e) {
-      log.error('No level found for weapon: ' + Types.getKindAsString(kind));
+      console.error('No level found for weapon: ' + Types.getKindAsString(kind));
     }
   },
   getHitPoints: kind => {

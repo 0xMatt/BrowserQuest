@@ -1,7 +1,5 @@
-import * as _ from 'lodash';
 import * as fs from 'fs';
 import {World} from './world';
-import {log} from './log';
 import {Server} from './ws';
 import {Metrics} from './metrics';
 import {Player} from './player';
@@ -17,7 +15,7 @@ function main(config) {
                 metrics.getTotalPlayers(function(totalPlayers) {
                     if(totalPlayers !== lastTotalPlayers) {
                         lastTotalPlayers = totalPlayers;
-                        _.each(worlds, function(world) {
+                        worlds.forEach(function(world) {
                             world.updatePopulation(totalPlayers);
                         });
                     }
@@ -25,8 +23,8 @@ function main(config) {
             }
         }, 1000);
 
-    log.info("Starting BrowserQuest game server...");
-    
+    console.info("Starting BrowserQuest game server...");
+
     server.onConnect(function(connection) {
         var world, // the one in which the player will be spawned
             connect = function() {
@@ -34,38 +32,37 @@ function main(config) {
                     world.connect_callback(new Player(connection, world));
                 }
             };
-        
+
         if(metrics) {
             metrics.getOpenWorldCount(function(open_world_count) {
+                console.log('open world count: ' + open_world_count);
                 // choose the least populated world among open worlds
-                world = _.min(_.first(worlds), function(w) { return w.playerCount; });
+                world = worlds.find(world => world.playerCount < config.nb_players_per_world && world.playerCount < open_world_count);
                 connect();
             });
         }
         else {
             // simply fill each world sequentially until they are full
-            world = _.detect(worlds, function(world) {
-                return world.playerCount < config.nb_players_per_world;
-            });
+            world = worlds.find(world => world.playerCount < config.nb_players_per_world);
             world.updatePopulation();
             connect();
         }
     });
 
     server.onError(function() {
-        log.error(Array.prototype.join.call(arguments, ", "));
+        console.error(Array.prototype.join.call(arguments, ", "));
     });
-    
+
     var onPopulationChange = function() {
         metrics.updatePlayerCounters(worlds, function(totalPlayers) {
-            _.each(worlds, function(world) {
+            worlds.forEach(function(world) {
                 world.updatePopulation(totalPlayers);
             });
         });
         metrics.updateWorldDistribution(getWorldDistribution(worlds));
     };
 
-    _.each(_.range(config.nb_worlds), function(i) {
+    Array.from({length: config.nb_worlds}, (_, i) => {
         var world = new WorldServer('world'+ (i+1), config.nb_players_per_world, server);
         world.run(config.map_filepath);
         worlds.push(world);
@@ -74,26 +71,26 @@ function main(config) {
             world.onPlayerRemoved(onPopulationChange);
         }
     });
-    
+
     server.onRequestStatus(function() {
         return JSON.stringify(getWorldDistribution(worlds));
     });
-    
+
     if(config.metrics_enabled) {
         metrics.ready(function() {
             onPopulationChange(); // initialize all counters to 0 when the server starts
         });
     }
-    
-    process.on('uncaughtException', function (e) {
-        log.error('uncaughtException: ' + e);
-    });
+
+    // process.on('uncaughtException', function (e) {
+    //     console.error('uncaughtException: ' + e);
+    // });
 }
 
 function getWorldDistribution(worlds) {
     var distribution = [];
-    
-    _.each(worlds, function(world) {
+
+    worlds.forEach(function(world) {
         distribution.push(world.playerCount);
     });
     return distribution;
@@ -114,10 +111,10 @@ var configPath = './server/config.json';
 
 process.argv.forEach(function (val, index, array) {
     if(index === 2) {
-      configPath = val;
+        configPath = val;
     }
 });
 
 getConfigFile(configPath, function(config) {
-  main(config);
+    main(config);
 });

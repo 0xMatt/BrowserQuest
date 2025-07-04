@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as _ from 'lodash';
-import {log} from './log';
 import {Checkpoint} from './checkpoint';
 import {Utils} from './utils';
 
@@ -29,7 +28,7 @@ export class Map {
 
     fs.exists(filepath, function (exists) {
       if (!exists) {
-        log.error(filepath + ' doesnt exist.');
+        console.error(filepath + ' doesnt exist.');
         return;
       }
 
@@ -107,7 +106,7 @@ export class Map {
           tileIndex += 1;
         }
       }
-      //log.info("Collision grid generated.");
+      //console.info("Collision grid generated.");
     }
   }
 
