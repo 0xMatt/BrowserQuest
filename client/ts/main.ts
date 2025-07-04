@@ -1,15 +1,13 @@
 import {App} from './app';
 import {Game} from './game';
-import {log} from './lib/log';
 import {Detect} from './utils/detect';
-import * as $ from 'jquery';
 import * as _ from 'lodash';
 
 
 var app, game;
 
 var initApp = function () {
-  $(document).ready(function () {
+  $(function () {
     app = new App();
     app.center();
 
@@ -165,7 +163,7 @@ var initApp = function () {
     $('#resize-check').bind('webkitTransitionEnd', app.resizeUi.bind(app));
     $('#resize-check').bind('oTransitionEnd', app.resizeUi.bind(app));
 
-    log.info('App initialized.');
+    console.info('App initialized.');
 
     initGame();
   });

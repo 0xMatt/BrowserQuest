@@ -1,5 +1,4 @@
 import {Game} from '../game';
-import {log} from '../lib/log';
 import {Types} from '../../../shared/ts/gametypes';
 import {Area} from './area';
 import {isInt} from '../utils/util';
@@ -62,7 +61,7 @@ export default class Map {
       filepath = 'maps/world_client.json';
 
     if (useWorker) {
-      log.info('Loading map with web worker.');
+      console.info('Loading map with web worker.');
       var worker = new Worker('mapworker.js');
       worker.postMessage(1);
 
@@ -75,7 +74,7 @@ export default class Map {
         self._checkReady();
       };
     } else {
-      log.info('Loading map via Ajax.');
+      console.info('Loading map via Ajax.');
       $.get(filepath, function (data) {
         self._initMap(data);
         self._generateCollisionGrid();
@@ -165,17 +164,17 @@ export default class Map {
 
     tileset.src = filepath;
 
-    log.info('Loading tileset: ' + filepath);
+    console.info('Loading tileset: ' + filepath);
 
     tileset.onload = function () {
       if (tileset.width % self.tilesize > 0) {
         throw Error('Tileset size should be a multiple of ' + self.tilesize);
       }
-      log.info('Map tileset loaded.');
+      console.info('Map tileset loaded.');
 
       self.tilesetCount -= 1;
       if (self.tilesetCount === 0) {
-        log.debug('All map tilesets loaded.')
+        console.debug('All map tilesets loaded.')
 
         self.tilesetsLoaded = true;
         self._checkReady();
@@ -248,7 +247,7 @@ export default class Map {
         self.grid[pos.y][pos.x] = 1;
       }
     });
-    log.info('Collision grid generated.');
+    console.info('Collision grid generated.');
   }
 
   _generatePlateauGrid() {
@@ -266,7 +265,7 @@ export default class Map {
         tileIndex += 1;
       }
     }
-    log.info('Plateau grid generated.');
+    console.info('Plateau grid generated.');
   }
 
   /**

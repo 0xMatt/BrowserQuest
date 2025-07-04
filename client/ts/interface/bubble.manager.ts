@@ -1,7 +1,6 @@
 import {Bubble} from './bubble';
 
 import * as _ from 'lodash';
-import * as $ from 'jquery';
 
 export class BubbleManager {
 

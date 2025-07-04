@@ -1,6 +1,5 @@
 import {Entity} from './entity';
 import {Utils} from './utils';
-import {log} from './log';
 import {Messages} from './message';
 
 export abstract class Character extends Entity {
@@ -85,7 +84,7 @@ export abstract class Character extends Entity {
   removeAttacker(entity) {
     if (entity && entity.id in this.attackers) {
       delete this.attackers[entity.id];
-      log.debug(this.id + " REMOVED ATTACKER " + entity.id);
+      console.debug(this.id + " REMOVED ATTACKER " + entity.id);
     }
   }
 

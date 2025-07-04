@@ -1,8 +1,7 @@
 import {Types} from '../../../shared/ts/gametypes';
-import {log} from '../lib/log';
 import {Player} from '../entity/character/player/player';
 import {EntityFactory} from '../entity/entityfactory';
-import * as io from 'socket.io-client';
+import io from 'socket.io-client';
 import * as _ from 'lodash';
 
 export class GameClient {
@@ -82,10 +81,10 @@ export class GameClient {
     var url = 'http://' + this.host + ':' + this.port + '/',
       self = this;
 
-    log.info('Trying to connect to server : ' + url);
+    console.info('Trying to connect to server : ' + url);
 
 
-    this.connection = io(url, {'force new connection': true});
+    this.connection = io(url);
     this.connection.on('connection', function (socket) {
       console.info('Connected to server ' + url);
     });
@@ -150,7 +149,7 @@ export class GameClient {
       this.handlers[action].call(this, data);
     }
     else {
-      log.error('Unknown action : ' + action);
+      console.error('Unknown action : ' + action);
     }
   }
 

@@ -1,5 +1,4 @@
 const AStar = require('../lib/astar');
-import * as _ from 'lodash';
 
 export class Pathfinder {
   width;
@@ -84,7 +83,7 @@ export class Pathfinder {
     var self = this,
       x, y, g;
 
-    _.each(this.ignored, function (entity) {
+    this.ignored.forEach(function (entity) {
       x = entity.isMoving() ? entity.nextGridX : entity.gridX;
       y = entity.isMoving() ? entity.nextGridY : entity.gridY;
 

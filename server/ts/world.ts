@@ -1,4 +1,3 @@
-import {log} from './log';
 import * as _ from 'lodash';
 import {Messages} from './message';
 import {MobArea} from './mobarea';
@@ -68,7 +67,7 @@ export class World {
     });
 
     this.onPlayerEnter(function (player) {
-      log.info(player.name + ' has joined ' + self.id);
+      console.info(player.name + ' has joined ' + self.id);
 
       if (!player.hasEnteredGame) {
         self.incrementPlayerCount();
@@ -79,7 +78,7 @@ export class World {
       self.pushRelevantEntityListTo(player);
 
       const move_callback = function (x, y) {
-        log.debug(player.name + ' is moving to (' + x + ', ' + y + ').');
+        console.debug(player.name + ' is moving to (' + x + ', ' + y + ').');
 
         player.forEachAttacker(function (mob: Mob) {
           var target = self.getEntityById(mob.target);
@@ -117,7 +116,7 @@ export class World {
       });
 
       player.onExit(function () {
-        log.info(player.name + ' has left the game.');
+        console.info(player.name + ' has left the game.');
         self.removePlayer(player);
         self.decrementPlayerCount();
 
@@ -210,7 +209,7 @@ export class World {
       }
     }, 1000 / this.ups);
 
-    log.info('' + this.id + ' created (capacity: ' + this.maxPlayers + ' players).');
+    console.info('' + this.id + ' created (capacity: ' + this.maxPlayers + ' players).');
   }
 
   setUpdatesPerSecond(ups) {
@@ -268,14 +267,14 @@ export class World {
       }
     });
 
-    log.debug('Pushed ' + _.size(ids) + ' new spawns to ' + player.id);
+    console.debug('Pushed ' + _.size(ids) + ' new spawns to ' + player.id);
   }
 
   pushToPlayer(player, message) {
     if (player && player.id in this.outgoingQueues) {
       this.outgoingQueues[player.id].push(message.serialize());
     } else {
-      log.error('pushToPlayer: player was undefined');
+      console.error('pushToPlayer: player was undefined');
     }
   }
 
@@ -290,7 +289,7 @@ export class World {
         }
       });
     } else {
-      log.error('groupId: ' + groupId + ' is not a valid group');
+      console.error('groupId: ' + groupId + ' is not a valid group');
     }
   }
 
@@ -356,7 +355,7 @@ export class World {
 
     entity.destroy();
     this.removeFromGroups(entity);
-    log.debug('Removed ' + Types.getKindAsString(entity.kind) + ' : ' + entity.id);
+    console.debug('Removed ' + Types.getKindAsString(entity.kind) + ' : ' + entity.id);
   }
 
   addPlayer(player) {
@@ -364,7 +363,7 @@ export class World {
     this.players[player.id] = player;
     this.outgoingQueues[player.id] = [];
 
-    //log.info("Added player : " + player.id);
+    //console.info("Added player : " + player.id);
   }
 
   removePlayer(player) {
@@ -500,7 +499,7 @@ export class World {
       mob.setTarget(player);
 
       this.broadcastAttacker(mob);
-      log.debug(mob.id + ' is now attacking ' + player.id);
+      console.debug(mob.id + ' is now attacking ' + player.id);
     }
   }
 
@@ -512,7 +511,7 @@ export class World {
     if (id in this.entities) {
       return this.entities[id];
     } else {
-      log.error('Unknown entity : ' + id);
+      console.error('Unknown entity : ' + id);
     }
   }
 
@@ -766,9 +765,9 @@ export class World {
   }
 
   logGroupPlayers(groupId) {
-    log.debug('Players inside group ' + groupId + ':');
+    console.debug('Players inside group ' + groupId + ':');
     _.each(this.groups[groupId].players, function (id) {
-      log.debug('- player ' + id);
+      console.debug('- player ' + id);
     });
   }
 
@@ -784,7 +783,7 @@ export class World {
 
         if (_.size(oldGroups) > 0) {
           entity.recentlyLeftGroups = _.difference(oldGroups, newGroups);
-          log.debug('group diff: ' + entity.recentlyLeftGroups);
+          console.debug('group diff: ' + entity.recentlyLeftGroups);
         }
       }
     }

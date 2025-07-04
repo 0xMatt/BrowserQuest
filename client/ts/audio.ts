@@ -1,4 +1,3 @@
-import {log} from './lib/log';
 import {Area} from './map/area';
 import {Detect} from './utils/detect';
 
@@ -24,7 +23,7 @@ export class AudioManager {
 
     var loadSoundFiles = function () {
       var counter = _.size(self.soundNames);
-      log.info('Loading sound files...');
+      console.info('Loading sound files...');
       _.each(self.soundNames, function (name) {
         self.loadSound(name, function () {
           counter -= 1;
@@ -39,7 +38,7 @@ export class AudioManager {
 
     var loadMusicFiles = function () {
       if (!self.game.renderer.mobile) { // disable music on mobile devices
-        log.info('Loading music files...');
+        console.info('Loading music files...');
         // Load the village music first, as players always start here
         self.loadMusic(self.musicNames.shift(), function () {
           // Then, load all the other music files
@@ -81,13 +80,13 @@ export class AudioManager {
 
     sound.addEventListener('canplaythrough', function (e) {
       // this.removeEventListener('canplaythrough', arguments.callee, false);
-      log.debug(path + ' is ready to play.');
+      console.debug(path + ' is ready to play.');
       if (loaded_callback) {
         loaded_callback();
       }
     }, false);
     sound.addEventListener('error', function (e) {
-      log.error('Error: ' + path + ' could not be loaded.');
+      console.error('Error: ' + path + ' could not be loaded.');
       self.sounds[name] = null;
     }, false);
 

@@ -3,30 +3,34 @@
   "version": "0.0.1",
   "private": false,
   "scripts": {
-    "watch:client": "./node_modules/.bin/webpack-dev-server --env.NODE_ENV=dev --config ./webpack.config.js --content-base client/ --inline --progress --watch --open",
-    "watch:server": "nodemon -e ts  --exec \"npm run build:server\"",
-    "build:client": "NODE_ENV=production webpack --env.NODE_ENV=prod --config ./webpack.config.js  --progress --profile --color --display-error-details --display-cached --bail",
-    "build:server": "tsc -p ./server && node dist/server/ts/main.js",
-    "test": ""
+    "watch:client": "webpack serve --env NODE_ENV=dev --config ./webpack.config.js --mode development",
+    "watch:server": "tsx --watch  ./server/ts/main.ts",
+    "build:client": "webpack --env NODE_ENV=prod --config ./webpack.config.js --mode production",
+    "build:server": "tsc -p ./server"
   },
   "dependencies": {
-    "express": "^4.16.1",
-    "jquery": "^2.2.4",
+    "express": "^4.18.2",
+    "jquery": "^3.7.1",
     "lodash": "3.10.1",
-    "log": ">0",
+    "log": "^6.3.1",
     "sanitizer": "^0.1.3",
-    "socket.io": "^2.0.3",
-    "socket.io-client": "^2.0.3"
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
-    "@types/jquery": "^2.0.46",
+    "@eslint/js": "^9.30.1",
+    "@types/jquery": "^3.5.32",
     "@types/lodash": "^3.10.1",
-    "@types/node": "^8.0.31",
-    "awesome-typescript-loader": "^3.2.3",
-    "copy-webpack-plugin": "^4.1.0",
-    "html-webpack-plugin": "^2.30.1",
-    "typescript": "^2.5.3",
-    "webpack": "^3.6.0",
-    "webpack-dev-server": "^2.9.1"
+    "copy-webpack-plugin": "^11.0.0",
+    "eslint": "^9.30.1",
+    "html-webpack-plugin": "^5.5.3",
+    "memcache": "^0.3.0",
+    "ts-loader": "^9.4.4",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.35.1",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.2.2"
   }
 }
